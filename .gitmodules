@@ -1,0 +1,6 @@
+[submodule "fibonacci-series"]
+	path = fibonacci-series
+	url = git@github.com:MohammedEssehemy/rust-fibonacci.git
+[submodule "guess_game"]
+	path = guess_game
+	url = git@github.com:MohammedEssehemy/guess-game.git
