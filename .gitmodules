@@ -4,3 +4,6 @@
 [submodule "guess_game"]
 	path = guess_game
 	url = git@github.com:MohammedEssehemy/guess-game.git
+[submodule "minigrep"]
+	path = minigrep
+	url = git@github.com:MohammedEssehemy/minigrep.git
