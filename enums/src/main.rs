@@ -1,4 +1,9 @@
 #[derive(Debug)]
+enum Allergen {
+    Test1 = 3,
+    Test2 = 6
+}
+#[derive(Debug)]
 enum UsState {
     Alaska,
     Florida,
@@ -14,7 +19,7 @@ fn get_coin_type(coin: Coin) -> i32 {
     match coin {
         Coin::Penny => 1,
         Coin::Quarter(us_state) => {
-            println!("The state is {:?}", us_state);
+            println!("The state is {:?}, {}, {:?}", us_state, Allergen::Test1 as u8, Allergen::Test2);
             25
         }
     }
