@@ -29,7 +29,7 @@ where Args: Eq + Hash + Clone, V: Clone {
 }
 
 
-pub fn try_cacher() {
+pub fn _try_cacher() {
     println!("--------------------");
     println!("try_cacher");
     println!("--------------------");

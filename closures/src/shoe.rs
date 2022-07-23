@@ -9,7 +9,7 @@ fn shoes_in_my_size(shoes: Vec<Shoe>, shoe_size: u32) -> Vec<Shoe> {
 }
 
 
-pub fn try_shoe() {
+pub fn _try_shoe() {
     println!("--------------------");
     println!("try_shoe");
     println!("--------------------");
