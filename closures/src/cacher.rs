@@ -1,14 +1,14 @@
 
 use std::{hash::Hash, collections::HashMap, thread, time::Duration};
 
-pub struct Cacher<'a, Args, V> where Args: Eq + Hash + Copy, V: Copy
+pub struct Cacher<'a, Args, V> where Args: Eq + Hash + Clone, V: Clone
 {
     calculation: &'a dyn Fn(Args) -> V,
     value: HashMap<Args, V>,
 }
 
 impl<'a, Args, V> Cacher<'a, Args, V>
-where Args: Eq + Hash + Copy, V: Copy {
+where Args: Eq + Hash + Clone, V: Clone {
     pub fn new(calculation: &'a dyn Fn(Args) -> V) -> Self {
         Self {
             calculation,
@@ -19,11 +19,11 @@ where Args: Eq + Hash + Copy, V: Copy {
     pub fn value(&mut self, arg: Args) -> V {
         match self.value.get(&arg) {
             None => {
-                let res = (self.calculation)(arg);
-                self.value.insert(arg, res);
+                let res = (self.calculation)(arg.clone());
+                self.value.insert(arg, res.clone());
                 res
             }
-            Some(res) => *res,
+            Some(res) => res.clone(),
         }
     }
 }
