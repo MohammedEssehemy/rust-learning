@@ -8,7 +8,7 @@ pub fn log() {
 
     let teams = vec![String::from("Blue"), String::from("Yellow")];
     let initial_scores = vec![10, 50];
-    let scores: HashMap<_, _> = teams.iter().zip(initial_scores.iter()).collect();
+    let scores = teams.into_iter().zip(initial_scores.into_iter()).collect::<HashMap<_, _>>();
     println!("{:?}", scores);
 
     let team_name = String::from("Blue");
