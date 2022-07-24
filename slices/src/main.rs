@@ -1,15 +1,16 @@
 fn main() {
-    let sentence = String::from("Hello, world!");
-    let my_str = first_word(&sentence);
+    let sentence = String::from("Hello world!");
+    let hello = first_word(&sentence);
+    // sentence.clear(); // error!
 
-    println!("{}", my_str);
+    println!("The first word is: {}", hello);
 }
 
 fn first_word(s: &str) -> &str {
     let bytes = s.as_bytes();
 
-    for (i, &item) in bytes.iter().enumerate() {
-        if item == b' ' {
+    for (i, &byte) in bytes.iter().enumerate() {
+        if byte == b' ' {
             return &s[0..i];
         }
     }
