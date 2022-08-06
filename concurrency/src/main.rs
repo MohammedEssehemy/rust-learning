@@ -73,48 +73,84 @@
 
 // // --------------------------------------
 
-use std::sync::mpsc;
+// use std::sync::mpsc;
+// use std::thread;
+// use std::time::Duration;
+// use chrono::Utc;
+
+// fn main() {
+//     let (tx, rx) = mpsc::channel();
+
+//     let tx1 = tx.clone();
+//     thread::spawn(move || {
+//         let vals = vec![
+//             String::from("thread_1: hi"),
+//             String::from("thread_1: from"),
+//             String::from("thread_1: the"),
+//             String::from("thread_1: thread"),
+//         ];
+
+//         for val in vals {
+//             tx1.send(val).unwrap();
+//             thread::sleep(Duration::from_secs(1));
+//         }
+//     });
+
+//     thread::spawn(move || {
+//         let vals = vec![
+//             String::from("thread_2: more"),
+//             String::from("thread_2: messages"),
+//             String::from("thread_2: for"),
+//             String::from("thread_2: you"),
+//         ];
+
+//         for val in vals {
+//             tx.send(val).unwrap();
+//             thread::sleep(Duration::from_secs(1));
+//         }
+//     });
+
+//     for received in rx {
+//         let now = Utc::now();
+//         println!("{}: Got: {}", now, received);
+//     }
+
+//     // --snip--
+// }
+// -------------------------------
+// use std::sync::Mutex;
+
+// fn main() {
+//     let m = Mutex::new(5);
+
+//     {
+//         let mut num = m.lock().unwrap();
+//         *num = 6;
+//     }
+
+//     println!("m = {:?}", m.lock().unwrap());
+// }
+// --------------------
+use std::sync::{Arc, Mutex};
 use std::thread;
-use std::time::Duration;
-use chrono::Utc;
 
 fn main() {
-    let (tx, rx) = mpsc::channel();
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
 
-    let tx1 = tx.clone();
-    thread::spawn(move || {
-        let vals = vec![
-            String::from("thread_1: hi"),
-            String::from("thread_1: from"),
-            String::from("thread_1: the"),
-            String::from("thread_1: thread"),
-        ];
+    for _ in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
 
-        for val in vals {
-            tx1.send(val).unwrap();
-            thread::sleep(Duration::from_secs(1));
-        }
-    });
-
-    thread::spawn(move || {
-        let vals = vec![
-            String::from("thread_2: more"),
-            String::from("thread_2: messages"),
-            String::from("thread_2: for"),
-            String::from("thread_2: you"),
-        ];
-
-        for val in vals {
-            tx.send(val).unwrap();
-            thread::sleep(Duration::from_secs(1));
-        }
-    });
-
-    for received in rx {
-        let now = Utc::now();
-        println!("{}: Got: {}", now, received);
+            *num += 1;
+        });
+        handles.push(handle);
     }
 
-    // --snip--
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("Result: {}", counter.lock().unwrap());
 }
-// -------------------------------
