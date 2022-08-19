@@ -58,3 +58,31 @@ With associated types, we don’t need to annotate types because we can’t impl
 Associated types also become part of the trait’s contract: implementors of the trait must provide a type to stand in for the associated type placeholder. Associated types often have a name that describes how the type will be used, and documenting the associated type in the API documentation is good practice.
 
 ## Advanced Types
+
+Rust needs to know how much memory to allocate for any value of a particular type, and all values of a type must use the same amount of memory.
+
+In general, this is the way in which dynamically sized types are used in Rust: they have an extra bit of metadata that stores the size of the dynamic information. The golden rule of dynamically sized types is that we must always put values of dynamically sized types behind a pointer of some kind.
+
+## Advanced Functions and Closures
+
+You can also pass regular functions to functions! This technique is useful when you want to pass a function you’ve already defined rather than defining a new closure. Functions coerce to the type `fn` (with a lowercase f), not to be confused with the `Fn` closure trait. The `fn` type is called a function pointer. Passing functions with function pointers will allow you to use functions as arguments to other functions.
+
+## Macros
+
+The term `macro` refers to a family of features in Rust: `declarative` macros with `macro_rules!` and three kinds of `procedural` macros:
+
+- Custom `#[derive]` macros that specify code added with the `derive` attribute used on structs and enums
+- Attribute-like macros that define custom attributes usable on any item
+- Function-like macros that look like function calls but operate on the tokens specified as their argument
+
+Fundamentally, macros are a way of writing code that writes other code, which is known as `metaprogramming`.
+
+`Metaprogramming` is useful for reducing the amount of code you have to write and maintain, which is also one of the roles of functions. However, macros have some additional powers that functions don’t.
+
+A function signature must declare the number and type of parameters the function has. Macros, on the other hand, can take a variable number of parameters. Also, macros are expanded before the compiler interprets the meaning of the code, so a macro can, for example, implement a trait on a given type. A function can’t, because it gets called at runtime and a trait needs to be implemented at compile time.
+
+The downside to implementing a macro instead of a function is that macro definitions are more complex than function definitions because you’re writing Rust code that writes Rust code. Due to this indirection, macro definitions are generally more difficult to read, understand, and maintain than function definitions.
+
+The most widely used form of macros in Rust is the `declarative` macro. These are also sometimes referred to as “macros by example,” “`macro_rules!` macros,” or just plain “macros.” At their core, declarative macros allow you to write something similar to a Rust `match` expression.
+
+`Procedural macro`, which acts more like a function (and is a type of procedure). Procedural macros accept some code as an input, operate on that code, and produce some code as an output. The three kinds of procedural macros are custom derive, attribute-like, and function-like, and all work in a similar fashion.

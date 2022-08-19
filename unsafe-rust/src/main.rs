@@ -156,28 +156,83 @@
 // }
 
 
-use std::{fmt, ops::Deref};
+// use std::{fmt, ops::Deref};
 
-struct Wrapper(Vec<String>);
+// struct Wrapper(Vec<String>);
 
-impl fmt::Display for Wrapper {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "[{}]", self.0.join(", "))
-    }
-}
+// impl fmt::Display for Wrapper {
+//     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+//         write!(f, "[{}]", self.0.join(", "))
+//     }
+// }
 
-impl Deref for Wrapper {
-    type Target = Vec<String>;
+// impl Deref for Wrapper {
+//     type Target = Vec<String>;
 
-    fn deref(&self) -> &Self::Target {
-        &self.0
-    }
+//     fn deref(&self) -> &Self::Target {
+//         &self.0
+//     }
+// }
+
+// fn main() {
+//     let w = Wrapper(vec![String::from("hello"), String::from("world")]);
+//     w.iter().for_each(|f| {
+//         println!("{}", f);
+//     });
+//     println!("w = {}", w);
+// }
+
+
+// fn bar() -> ! {
+//     // --snip--
+//     panic!("panic#####");
+// }
+
+// fn main () {
+//     bar();
+// }
+// fn add_one(x: i32) -> i32 {
+//     x + 1
+// }
+
+// fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
+//     f(arg) + f(arg)
+// }
+
+// fn main() {
+//     let answer = do_twice(add_one, 5);
+
+//     println!("The answer is: {}", answer);
+// }
+
+// fn main() {
+//     let list_of_numbers = vec![1, 2, 3];
+//     let list_of_strings: Vec<String> =
+//         list_of_numbers.iter().map(|i| i.to_string()).collect();
+// }
+
+
+// fn main() {
+//     let list_of_numbers = vec![1, 2, 3];
+//     let list_of_strings: Vec<String> =
+//         list_of_numbers.iter().map(ToString::to_string).collect();
+// }
+
+
+#[macro_export]
+macro_rules! vec {
+    ( $( $x:expr ),* ) => {
+        {
+            let mut temp_vec = Vec::new();
+            $(
+                temp_vec.push($x);
+                println!("{}", $x);
+            )*
+            temp_vec
+        }
+    };
 }
 
 fn main() {
-    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
-    w.iter().for_each(|f| {
-        println!("{}", f);
-    });
-    println!("w = {}", w);
+    vec!(2,3,4);
 }
