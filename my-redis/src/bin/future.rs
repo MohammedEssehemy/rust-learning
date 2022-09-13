@@ -38,10 +38,10 @@ impl Future for Delay {
 
     fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
         if Instant::now() >= self.when {
-            println!("Hello world");
+            // println!("Hello world");
             Poll::Ready("done")
         } else {
-            println!("Did a check");
+            // println!("Did a check");
             // Ignore this line for now.
             cx.waker().wake_by_ref();
             Poll::Pending
@@ -51,9 +51,46 @@ impl Future for Delay {
 
 #[tokio::main]
 async fn main() {
-    let when = Instant::now() + Duration::from_millis(10);
+    println!("before first");
+    let half_sec = 5_u32 * 10_u32.pow(8);
+    let start= Instant::now();
+    let when = start + Duration::new(3, half_sec);
     let future = Delay { when };
-
     let out = future.await;
-    assert_eq!(out, "done");
+    let diff = Instant::now().duration_since(start);
+    println!("first function: {}, {:?}", out, diff);
+
+    // using notifier
+    println!("before second");
+    let start= Instant::now();
+    let out2 = delay(Duration::new(3, half_sec)).await;
+    let diff = Instant::now().duration_since(start);
+    println!("second function: {}, {:?}", out2, diff);
+}
+
+
+use tokio::sync::Notify;
+use std::sync::Arc;
+use std::thread;
+
+
+// using notifier
+async fn delay(dur: Duration) -> String {
+    let when = Instant::now() + dur;
+    let notify = Arc::new(Notify::new());
+    let notify2 = notify.clone();
+
+    thread::spawn(move || {
+        let now = Instant::now();
+
+        if now < when {
+            thread::sleep(when - now);
+        }
+
+        notify2.notify_one();
+    });
+
+
+    notify.notified().await;
+    String::from("done")
 }
