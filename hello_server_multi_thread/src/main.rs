@@ -5,7 +5,10 @@ use std::{
     thread,
     time::Duration,
 };
-use hello_server::ThreadPool;
+use hello_server_multi_thread::ThreadPool;
+
+// https://doc.rust-lang.org/book/ch20-02-multithreaded.html
+// https://doc.rust-lang.org/book/ch20-03-graceful-shutdown-and-cleanup.html
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();

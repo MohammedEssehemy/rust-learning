@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "hello_server"
+name = "hello_server_multi_thread"
 version = "0.1.0"
