@@ -36,14 +36,27 @@ struct Delay {
 impl Future for Delay {
     type Output = &'static str;
 
-    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<&'static str>
+    {
         if Instant::now() >= self.when {
-            // println!("Hello world");
+            println!("Hello world");
             Poll::Ready("done")
         } else {
-            // println!("Did a check");
-            // Ignore this line for now.
-            cx.waker().wake_by_ref();
+            // Get a handle to the waker for the current task
+            let waker = cx.waker().clone();
+            let when = self.when;
+
+            // Spawn a timer thread.
+            thread::spawn(move || {
+                let now = Instant::now();
+
+                if now < when {
+                    thread::sleep(when - now);
+                }
+
+                waker.wake();
+            });
+
             Poll::Pending
         }
     }
