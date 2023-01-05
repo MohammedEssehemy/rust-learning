@@ -2,6 +2,7 @@
 unicode-segmentation = "^1.10.0"
 
 [features]
+default = ["grapheme"]
 grapheme = []
 
 [package]
