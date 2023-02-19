@@ -2,7 +2,9 @@
 
 This repository is to document my journey towards learning Rust
 
-## I'm using the following books
+## I'm using the following
 
-* The RUST programming language book (15.3. Running Code on Cleanup with the Drop Trait)
-* Rust by example. (2.2 Tuples)
+* The RUST programming language book.
+* Rust by example.
+* Exercism
+* LeetCode
